@@ -1,0 +1,148 @@
+{% extends 'bookings/base.html' %}
+{% load static %}
+
+{% block title %}Grand Hotel & Restaurant - Experience Unmatched Luxury{% endblock %}
+
+{% block content %}
+<!-- Rotating Hero Carousel Section -->
+<section class="hero-carousel-section position-relative overflow-hidden bg-dark text-white">
+    <div class="carousel-container" id="heroCarousel">
+        
+        <!-- Slide 1: Hotel / Welcome -->
+        <div class="hero-slide active" style="background-image: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80');">
+            <div class="hero-overlay"></div>
+            <div class="container py-5 text-center position-relative z-1 d-flex flex-column justify-content-center align-items-center" style="min-height: 450px;">
+                <h1 class="display-5 fw-bold mb-3 text-white text-shadow" style="font-family: 'Playfair Display', serif;">Experience Comfort. Stay in Style.</h1>
+                <p class="lead mb-4 mx-auto fw-light text-light text-shadow" style="max-width: 650px;">Discover comfortable rooms, exceptional dining and a memorable stay.</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{% url 'bookings:room_list' %}" class="btn-primary-custom">Book a Room</a>
+                    <a href="{% url 'bookings:room_list' %}" class="btn-outline-custom">Explore Rooms</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Rooms -->
+        <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1920&q=80');">
+            <div class="hero-overlay"></div>
+            <div class="container py-5 text-center position-relative z-1 d-flex flex-column justify-content-center align-items-center" style="min-height: 450px;">
+                <h1 class="display-5 fw-bold mb-3 text-white text-shadow" style="font-family: 'Playfair Display', serif;">Rooms Designed for Your Comfort</h1>
+                <p class="lead mb-4 mx-auto fw-light text-light text-shadow" style="max-width: 650px;">Choose from our comfortable rooms and suites at competitive prices.</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{% url 'bookings:room_list' %}" class="btn-primary-custom">View Rooms</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Food -->
+        <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1920&q=80');">
+            <div class="hero-overlay"></div>
+            <div class="container py-5 text-center position-relative z-1 d-flex flex-column justify-content-center align-items-center" style="min-height: 450px;">
+                <h1 class="display-5 fw-bold mb-3 text-white text-shadow" style="font-family: 'Playfair Display', serif;">Enjoy Great Food</h1>
+                <p class="lead mb-4 mx-auto fw-light text-light text-shadow" style="max-width: 650px;">Explore our restaurant menu and enjoy freshly prepared meals during your stay.</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{% url 'bookings:menu_list' %}" class="btn-primary-custom">Explore Menu</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Hotel Experience -->
+        <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1920&q=80');">
+            <div class="hero-overlay"></div>
+            <div class="container py-5 text-center position-relative z-1 d-flex flex-column justify-content-center align-items-center" style="min-height: 450px;">
+                <h1 class="display-5 fw-bold mb-3 text-white text-shadow" style="font-family: 'Playfair Display', serif;">Everything You Need in One Place</h1>
+                <p class="lead mb-4 mx-auto fw-light text-light text-shadow" style="max-width: 650px;">Comfortable accommodation, delicious food and a convenient booking experience.</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{% url 'bookings:room_list' %}" class="btn-primary-custom">Book Your Stay</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Slide Indicators -->
+    <div class="carousel-indicators-custom position-absolute bottom-0 start-0 end-0 pb-3 d-flex justify-content-center align-items-center gap-2 z-2">
+        <span class="indicator active" onclick="currentSlide(0)"></span>
+        <span class="indicator" onclick="currentSlide(1)"></span>
+        <span class="indicator" onclick="currentSlide(2)"></span>
+        <span class="indicator" onclick="currentSlide(3)"></span>
+    </div>
+</section>
+
+<!-- Featured Luxury Rooms Section -->
+<section class="container py-5 my-3">
+    <div class="text-center mb-5">
+        <h2 class="h3 fw-bold text-dark" style="font-family: 'Playfair Display', serif;">Featured Luxury Rooms</h2>
+        <div class="mx-auto my-2" style="width: 50px; height: 2px; background-color: #d97706;"></div>
+        <p class="text-muted small">Discover our handpicked premium accommodations.</p>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% if featured_rooms %}
+            {% for room in featured_rooms %}
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm overflow-hidden rounded-3">
+                    {% if room.image %}
+                        <img src="{{ room.image.url }}" class="card-img-top object-fit-cover" alt="{{ room.name }}" style="height: 220px;">
+                    {% else %}
+                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80" class="card-img-top object-fit-cover" alt="Luxury Room" style="height: 220px;">
+                    {% endif %}
+                    <div class="card-body d-flex flex-column p-4">
+                        <h3 class="h5 fw-bold text-dark mb-2" style="font-family: 'Playfair Display', serif;">{{ room.name }}</h3>
+                        <p class="text-muted small mb-3">{{ room.description|default:"Experience ultimate comfort and elegance."|truncatechars:90 }}</p>
+                        
+                        <div class="mt-auto d-flex align-items-center justify-content-between pt-3 border-top">
+                            <div>
+                                <span class="fw-bold fs-5 text-dark">${{ room.price }}</span>
+                                <span class="text-muted small"> / night</span>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'bookings:room_list' %}" class="btn btn-outline-dark btn-sm rounded-pill px-3">View</a>
+                                <a href="{% url 'bookings:room_list' %}" class="btn btn-dark btn-sm rounded-pill px-3">Book</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12 text-center py-5">
+                <p class="text-muted">No rooms are currently available. Please check back soon.</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Simple Rotating Carousel Script -->
+<script>
+let slideIndex = 0;
+const slides = document.querySelectorAll('.hero-slide');
+const indicators = document.querySelectorAll('.carousel-indicators-custom .indicator');
+let slideInterval;
+
+function showSlide(n) {
+    slides.forEach(slide => slide.classList.remove('active'));
+    indicators.forEach(ind => ind.classList.remove('active'));
+    
+    slideIndex = (n + slides.length) % slides.length;
+    
+    slides[slideIndex].classList.add('active');
+    indicators[slideIndex].classList.add('active');
+}
+
+function nextSlide() {
+    showSlide(slideIndex + 1);
+}
+
+function currentSlide(n) {
+    showSlide(n);
+    resetTimer();
+}
+
+function resetTimer() {
+    clearInterval(slideInterval);
+    slideInterval = setInterval(nextSlide, 5000);
+}
+
+slideInterval = setInterval(nextSlide, 5000);
+</script>
+{% endblock %}

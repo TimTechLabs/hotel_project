@@ -1,0 +1,77 @@
+{% extends 'bookings/base.html' %}
+{% block content %}
+<div class="container py-5">
+    <h2 class="fw-bold mb-4" style="font-family: 'Playfair Display', serif;">Your Reservation & Dining Cart</h2>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Booked Rooms -->
+            <h4 class="fw-bold text-dark mb-3">Room Bookings</h4>
+            {% if cart.rooms %}
+                <div class="list-group mb-4 shadow-sm">
+                    {% for key, item in cart.rooms.items %}
+                        <div class="list-group-item d-flex justify-content-between align-items-center p-3">
+                            <div>
+                                <h5 class="fw-bold mb-1">{{ item.name }}</h5>
+                                <p class="text-muted small mb-1">
+                                    Check-in: {{ item.check_in }} | Check-out: {{ item.check_out }} 
+                                    <span class="badge bg-secondary ms-1">{{ item.nights }} Night(s)</span>
+                                </p>
+                                <span class="text-muted small">Rate: KSH {{ item.price }} / night</span>
+                            </div>
+                            <div class="text-end">
+                                <h5 class="fw-bold text-dark mb-2">KSH {{ item.total_price }}</h5>
+                                <a href="{% url 'bookings:cart_remove' item.room_id %}?is_room=true" class="btn btn-sm btn-outline-danger">Remove</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-muted mb-4">No rooms selected yet. <a href="{% url 'bookings:room_list' %}">Browse rooms</a></p>
+            {% endif %}
+
+            <!-- Restaurant Food Orders -->
+            <h4 class="fw-bold text-dark mb-3">Restaurant Food Items</h4>
+            {% if cart.menu_items %}
+                <div class="list-group mb-4 shadow-sm">
+                    {% for key, item in cart.menu_items.items %}
+                        <div class="list-group-item d-flex justify-content-between align-items-center p-3">
+                            <div>
+                                <h5 class="fw-bold mb-1">{{ item.name }}</h5>
+                                <p class="text-muted small mb-0">Quantity: {{ item.quantity }} × KSH {{ item.price }}</p>
+                            </div>
+                            <div class="text-end">
+                                <h5 class="fw-bold text-dark mb-2">KSH {{ item.total_price }}</h5>
+                                <a href="{% url 'bookings:cart_remove' item.item_id %}?is_room=false" class="btn btn-sm btn-outline-danger">Remove</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-muted mb-4">No food items added yet. <a href="{% url 'bookings:menu_list' %}">View restaurant menu</a></p>
+            {% endif %}
+        </div>
+
+        <!-- Checkout Summary Card -->
+        <div class="col-lg-4">
+            <div class="card p-4 border-0 shadow-sm rounded-4 bg-light">
+                <h4 class="fw-bold mb-3">Cart Summary</h4>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Rooms Total:</span>
+                    <span class="fw-bold">KSH {{ rooms_total }}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="text-muted">Food Total:</span>
+                    <span class="fw-bold">KSH {{ menu_total }}</span>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between mb-4">
+                    <h5 class="fw-bold">Grand Total:</h5>
+                    <h4 class="fw-bold text-success">KSH {{ grand_total }}</h4>
+                </div>
+                <a href="{% url 'bookings:checkout' %}" class="btn btn-dark btn-lg w-100 rounded-pill">Proceed to Checkout</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

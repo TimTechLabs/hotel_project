@@ -1,0 +1,92 @@
+{% extends 'bookings/base.html' %}
+{% block content %}
+<div class="container py-5">
+    <h2 class="fw-bold mb-4" style="font-family: 'Playfair Display', serif;">Checkout</h2>
+    <div class="row">
+        <!-- Guest Information Form -->
+        <div class="col-lg-7">
+            <div class="card p-4 border-0 shadow-sm rounded-4">
+                <h4 class="fw-bold mb-3">Guest Information</h4>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">First Name</label>
+                        <input type="text" name="first_name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Last Name</label>
+                        <input type="text" name="last_name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Phone Number</label>
+                        <input type="text" name="phone" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Address / Country</label>
+                        <textarea name="address" class="form-control" rows="2" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-dark btn-lg w-100 rounded-pill">Confirm & Book Now</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Booking Summary Sidebar -->
+        <div class="col-lg-5">
+            <div class="card p-4 border-0 shadow-sm rounded-4 bg-light">
+                <h4 class="fw-bold mb-4">Booking Summary</h4>
+                
+                <div class="mb-3">
+                    <h6 class="fw-bold text-muted">Room Bookings</h6>
+                    {% if cart.rooms %}
+                        <ul class="list-unstyled small">
+                            {% for key, item in cart.rooms.items %}
+                                <li class="d-flex justify-content-between mb-1">
+                                    <span>{{ item.name }} ({{ item.nights }}n)</span>
+                                    <span>KSH {{ item.total_price }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="small text-muted">No rooms selected.</p>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <h6 class="fw-bold text-muted">Restaurant Menu Orders</h6>
+                    {% if cart.menu_items %}
+                        <ul class="list-unstyled small">
+                            {% for key, item in cart.menu_items.items %}
+                                <li class="d-flex justify-content-between mb-1">
+                                    <span>{{ item.name }} (x{{ item.quantity }})</span>
+                                    <span>KSH {{ item.total_price }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="small text-muted">No food orders.</p>
+                    {% endif %}
+                </div>
+
+                <hr>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Rooms Total:</span>
+                    <span class="fw-bold">KSH {{ rooms_total }}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="text-muted">Food Total:</span>
+                    <span class="fw-bold">KSH {{ menu_total }}</span>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between">
+                    <h4 class="fw-bold">Total Balance:</h4>
+                    <h4 class="fw-bold text-success">KSH {{ grand_total }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
