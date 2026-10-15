@@ -17,45 +17,47 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
 
-    <!-- Sleek Fixed-Top Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm py-3">
-        <div class="container">
-            <a class="navbar-brand fw-bold fs-4" style="font-family: 'Playfair Display', serif;" href="{% url 'bookings:home' %}">
-             <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="{% url 'bookings:home' %}" style="font-family: 'Playfair Display', serif;">
-    <img src="{% static 'images/logo.png' %}" alt="Grand Hotel Logo" height="36" class="rounded">
-    <span>Grand Hotel</span>
-</a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end align-items-center" id="navbarNav">
-                <ul class="navbar-nav align-items-lg-center gap-lg-4 mb-3 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'bookings:home' %}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'bookings:room_list' %}">Rooms</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'bookings:menu_list' %}">Restaurant Menu</a>
-                    </li>
-                    <li class="nav-item">
-                   <a class="nav-link" href="{% url 'bookings:cart_detail' %}">
-    Cart ({{ cart_count|default:0 }})
-</a>
-                    </li>
-                    <li class="nav-item ms-lg-2">
-                        <a href="{% url 'bookings:room_list' %}" class="btn-primary-custom px-4 rounded-pill">Book Now</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top m-0">
+  <div class="container">
+    <!-- Brand Logo & Text -->
+    <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="{% url 'bookings:home' %}">
+      <img src="{% static 'images/logo.png' %}" alt="Grand Hotel Logo" height="36" class="rounded">
+      <span class="text-white fs-5">Grand Hotel</span>
+    </a>
 
-    <!-- Main Content Wrapper (Accounts for fixed navbar height) -->
-    <main class="flex-grow-1" style="margin-top: 76px;">
-        {% block content %}{% endblock %}
-    </main>
+    <!-- Mobile Toggler -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Corrected Nav Links using Django URLs -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-2 mt-3 mt-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'bookings:home' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'bookings:room_list' %}">Rooms</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'bookings:menu_list' %}">Restaurant Menu</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'bookings:cart_detail' %}">Cart ({{ cart_count|default:0 }})</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-warning text-dark fw-bold w-100 w-lg-auto ms-lg-2" href="{% url 'bookings:room_list' %}">Book Now</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Wrapper with ZERO top margin/padding to remove white space -->
+<main class="flex-grow-1 p-0 m-0">
+    {% block content %}
+    {% endblock %}
+</main>
 
     <!-- Professional 3-Column Footer -->
     <footer class="bg-dark text-white pt-5 pb-3 mt-auto border-top border-secondary">
